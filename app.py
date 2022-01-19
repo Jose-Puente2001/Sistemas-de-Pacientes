@@ -28,8 +28,8 @@ class Patient:
 
         #area Input
         Label(frame, text='Area donde se dirige: ').grid(row = 3, column= 0)
-        self.lastname = Entry(frame)
-        self.lastname.grid(row = 3, column = 1)
+        self.area = Entry(frame)
+        self.area.grid(row = 3, column = 1)
 
         # Price Input
         Label(frame, text='Precio: ').grid(row = 4, column = 0)
@@ -37,8 +37,12 @@ class Patient:
         self.price.grid(row = 4, column = 1)
         
         # Button
-        ttk.Button(frame, text='Guardar Paciente').grid(row = 5, columnspan = 2, sticky = W + E)
+        ttk.Button(frame, text='Guardar Paciente', command = self.add_patients).grid(row = 5, columnspan = 2, sticky = W + E)
         
+        # Output Messages 
+        self.message = Label(text = '', fg = 'red')
+        self.message.grid(row = 3, column = 0, columnspan = 5, sticky = W + E)
+
         #table
         self.tree = ttk.Treeview(height = 15, columns=[f"#{n}" for n in range(0, 3)])
         self.tree.grid(row = 6, column = 0, columnspan = 4)
@@ -46,6 +50,10 @@ class Patient:
         self.tree.heading('#1', text = 'Apellido', anchor = CENTER)
         self.tree.heading('#2', text = 'Area', anchor = CENTER)
         self.tree.heading('#3', text = 'Precio' , anchor= CENTER)
+
+        ttk.Button(text = 'Eliminar').grid(row = 5, column= 1, columnspan = 2, sticky = W + E)
+        ttk.Button(text = 'Editar').grid(row = 5,  column = 0, pady = 20, sticky = W + E)
+
 
         self.get_patients()
 
@@ -68,6 +76,24 @@ class Patient:
        for row in db_rows:
             self.tree.insert('', 0, text=row[1], values = (row[2], row[3], row[4]))
             
+    def validation(self):
+        return len(self.name.get())!=0 and len(self.lastname.get())!=0 and len(self.area.get())!=0 and len(self.price.get())!=0
+
+
+    def add_patients(self):
+        if self.validation():
+            query = 'INSERT INTO patient VALUES(NULL, ?, ?, ?, ?)'
+            parameters =  (self.name.get(), self.lastname.get(), self.area.get(), self.price.get())
+            self.run_query(query, parameters)
+            self.message['text'] = 'Paciente Agregado Sastifactoriamente'
+            self.name.delete(0, END)
+            self.lastname.delete(0, END)
+            self.area.delete(0, END)
+            self.price.delete(0, END)
+        else:
+          self.message['text'] = 'Todos los datos son requeridos'
+        self.get_patients()
+
 
 
 if __name__ == '__main__':
