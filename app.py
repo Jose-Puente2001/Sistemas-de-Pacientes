@@ -43,6 +43,7 @@ class Patient:
         self.message = Label(text = '', fg = 'red')
         self.message.grid(row = 3, column = 0, columnspan = 5, sticky = W + E)
 
+        
         #table
         self.tree = ttk.Treeview(height = 10, columns=[f"#{n}" for n in range(0, 3)])
         self.tree.grid(row = 6, column = 0, columnspan = 4)
@@ -124,28 +125,28 @@ class Patient:
         self.edit_wind = Toplevel()
         self.edit_wind.title = 'Editar Paciente'
 
-        Label(self.edit_wind, text = 'Old Name:').grid(row = 0, column = 1)
+        Label(self.edit_wind, text = 'Antiguo Nombre:').grid(row = 0, column = 1)
         Entry(self.edit_wind, textvariable = StringVar(self.edit_wind, value = name), state = 'readonly').grid(row = 0, column = 2)
 
         Label(self.edit_wind, text = 'Nuevo Nombre:').grid(row = 1, column = 1)
         new_name = Entry(self.edit_wind)
         new_name.grid(row = 1, column = 2)
         
-        Label(self.edit_wind, text = 'Old lastname:').grid(row = 2, column = 1)
+        Label(self.edit_wind, text = 'Antiguo Apellido:').grid(row = 2, column = 1)
         Entry(self.edit_wind, textvariable = StringVar(self.edit_wind, value = old_lastname), state = 'readonly').grid(row = 2, column = 2)
 
         Label(self.edit_wind, text = 'Nuevo Apellido:').grid(row = 3, column = 1)
         new_lastaname= Entry(self.edit_wind)
         new_lastaname.grid(row = 3, column = 2)
 
-        Label(self.edit_wind, text = 'Old Area:').grid(row = 4, column = 1)
+        Label(self.edit_wind, text = 'Antigua Area:').grid(row = 4, column = 1)
         Entry(self.edit_wind, textvariable = StringVar(self.edit_wind, value = old_area), state = 'readonly').grid(row = 4, column = 2)
 
         Label(self.edit_wind, text = 'Nueva Area:').grid(row = 5, column = 1)
         new_area= Entry(self.edit_wind)
         new_area.grid(row = 5, column = 2)
 
-        Label(self.edit_wind, text = 'Old Price:').grid(row = 6, column = 1)
+        Label(self.edit_wind, text = 'Antiguo Precio:').grid(row = 6, column = 1)
         Entry(self.edit_wind, textvariable = StringVar(self.edit_wind, value = old_price), state = 'readonly').grid(row = 6, column = 2)
 
         Label(self.edit_wind, text = 'Nuevo Precio:').grid(row = 7, column = 1)
@@ -157,7 +158,7 @@ class Patient:
 
 
     def edit_records(self, new_name, name, new_lastaname, old_lastname, new_area, old_area, new_price, old_price):
-        query = 'UPDATE patient SET name = ?, lastname = ?, area = ?, price = ?, WHERE name = ? AND lastname = ? AND area = ? AND price = ?'
+        query = 'UPDATE patient SET name = ?, lastname = ?, area = ?, price = ? WHERE name = ? AND lastname = ? AND area = ? AND price = ?'
         parameters = (new_name, new_lastaname, new_area, new_price, name, old_lastname, old_area, old_price)
         self.run_query(query, parameters)
         self.edit_wind.destroy()
